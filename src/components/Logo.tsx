@@ -1,6 +1,6 @@
 import React from 'react';
 // @ts-ignore
-import logoImg from '../../assets/logo.jpg';
+import logoImg from '../assets/logo.jpg';
 
 interface LogoProps {
   className?: string;

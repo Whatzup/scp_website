@@ -64,7 +64,7 @@ Vercel will successfully build and host the app at your custom Vercel subdomain 
 ## 🛠️ Project Architecture
 
 - **`vercel.json`**: Pre-configured at the root level to route all client-side page paths to `index.html` seamlessly, preventing 404s on refresh.
-- **`src/components/Logo.tsx`**: Loads the official local fallback `assets/logo.jpg` derived from your uploaded `logo.jpeg`.
+- **`src/components/Logo.tsx`**: Loads the official local fallback `src/assets/logo.jpg` and `public/logo.jpg` derived from your uploaded label file.
 - **`src/components/Hero.tsx`**: Displaying your custom slogan, service descriptions, and Haryana division tax credentials.
 - **`src/components/DealerShowcase.tsx`**: Highlighting authentic factory partnerships with direct-source warranties.
 
