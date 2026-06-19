@@ -143,10 +143,11 @@ export default function BookingModal({ isOpen, onClose, selectedCategory }: Book
           </div>
           <button 
             onClick={onClose}
-            className="p-1 rounded-full hover:bg-white/10 text-white transition-colors"
+            className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-white/10 text-white transition-colors cursor-pointer"
             id="close-booking-modal-btn"
+            aria-label="Close"
           >
-            <X className="w-6 h-6" />
+            <X className="w-5 h-5" />
           </button>
         </div>
 

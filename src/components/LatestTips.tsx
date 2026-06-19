@@ -31,12 +31,16 @@ export default function LatestTips() {
         </div>
 
         {/* Blog Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <p className="text-[10px] font-mono text-slate-400 mb-2 md:hidden flex items-center gap-1">
+          <span>Swipe to read expert tips</span>
+          <span className="animate-pulse">→</span>
+        </p>
+        <div className="flex overflow-x-auto pb-4 gap-6 scrollbar-thin snap-x snap-mandatory -mx-6 px-6 md:mx-0 md:px-0 md:grid md:grid-cols-3 md:gap-8">
           {ARTICLES.map((article) => (
             <article 
               key={article.id}
               onClick={() => setActiveArticle(article)}
-              className="group cursor-pointer flex flex-col justify-between space-y-4"
+              className="group cursor-pointer flex flex-col justify-between space-y-4 min-w-[280px] w-[80vw] md:w-auto shrink-0 snap-center md:shrink"
               id={`article-card-${article.id}`}
             >
               <div className="space-y-4">
@@ -87,12 +91,13 @@ export default function LatestTips() {
 
       {/* Article Detail Drawer Modal */}
       {activeArticle && (
-        <div className="fixed inset-0 bg-[#002045]/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-xl overflow-hidden shadow-2xl border border-ice-blue max-w-2xl w-full relative">
+        <div className="fixed inset-0 bg-[#002045]/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 overflow-y-auto">
+          <div className="bg-white rounded-xl shadow-2xl border border-ice-blue max-w-2xl w-full relative max-h-[92vh] flex flex-col overflow-y-auto">
             <button
               onClick={() => setActiveArticle(null)}
-              className="absolute top-4 right-4 text-slate-400 hover:text-slate-700 hover:bg-slate-100 p-2 rounded-full transition-colors z-10"
+              className="absolute top-3 right-3 text-white hover:text-slate-200 bg-black/60 hover:bg-black/80 w-10 h-10 flex items-center justify-center rounded-full transition-colors z-20"
               id="close-article-modal-btn"
+              aria-label="Close"
             >
               <X className="w-5 h-5" />
             </button>

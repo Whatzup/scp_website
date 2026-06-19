@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import Header from './components/Header';
 import Hero from './components/Hero';
@@ -25,7 +25,7 @@ import CareersSection from './components/CareersSection';
 import WhatsAppWidget from './components/WhatsAppWidget';
 import ClientLogos from './components/ClientLogos';
 import ServiceDetailPage from './components/ServiceDetailPage';
-import { Phone, Mail, MapPin, Clock, Calendar, ShieldCheck, HelpCircle } from 'lucide-react';
+import { Phone, Mail, MapPin, Clock, Calendar, ShieldCheck, HelpCircle, Download, FileText } from 'lucide-react';
 
 export default function App() {
   const [bookingModalOpen, setBookingModalOpen] = useState(false);
@@ -33,12 +33,52 @@ export default function App() {
   const [selectedCategory, setSelectedCategory] = useState<string>('residential');
   
   // Transition-ready Client Side Router Page State
-  const [activePage, setActivePage] = useState<string>('home');
+  const [activePage, setActivePage] = useState<string>(() => {
+    if (typeof window !== 'undefined') {
+      const hash = window.location.hash.replace('#', '');
+      const validPages = ['home', 'services', 'industries', 'projects', 'careers', 'faq', 'contact'];
+      if (hash && validPages.includes(hash)) {
+        return hash;
+      }
+    }
+    return 'home';
+  });
   
   // Services nested screen mode: 'overview' (Bento grid) or 'details' (Technical sheet)
   const [servicesTab, setServicesTab] = useState<'overview' | 'details'>('overview');
   const [selectedServiceId, setSelectedServiceId] = useState<string>('vrv-installation');
   const [autoOpenDetail, setAutoOpenDetail] = useState<boolean>(false);
+
+  // Sync page state with URL hashes for native browser navigation, bookmarks, and sharing
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash.replace('#', '');
+      const validPages = ['home', 'services', 'industries', 'projects', 'careers', 'faq', 'contact'];
+      if (hash && validPages.includes(hash)) {
+        setActivePage(hash);
+      } else if (!hash) {
+        setActivePage('home');
+      }
+    };
+
+    // Listen to browser navigation changes (Back/Forward)
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
+
+  // Update URL hash whenever activePage state changes
+  useEffect(() => {
+    const currentHash = window.location.hash.replace('#', '');
+    if (activePage === 'home') {
+      if (currentHash && currentHash !== 'home') {
+        window.history.pushState(null, '', window.location.pathname + window.location.search);
+      }
+    } else {
+      if (currentHash !== activePage) {
+        window.location.hash = activePage;
+      }
+    }
+  }, [activePage]);
 
 
 
@@ -55,6 +95,11 @@ export default function App() {
   // Navigates and auto scrolls smoothly
   const handleNavigate = (page: string) => {
     setActivePage(page);
+    if (page === 'home') {
+      window.history.pushState(null, '', window.location.pathname + window.location.search);
+    } else {
+      window.location.hash = page;
+    }
     window.scrollTo({ top: 0, behavior: 'instant' });
   };
 
@@ -64,6 +109,69 @@ export default function App() {
     setServicesTab('details');
     setAutoOpenDetail(true);
     handleNavigate('services');
+  };
+
+  const handleDownloadProfile = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const profileContent = `===========================================================
+KD AC | SUPER COOL PROJECTS PRIVATE LIMITED - COMPANY PROFILE 2026
+===========================================================
+DIRECT PLATINUM PARTNER: DAIKIN & VOLTAS COMMERCIAL HVAC
+
+ABOUT US
+-----------------------------------------------------------
+KD AC | Super Cool Projects is Northern India's premier HVAC Engineering, 
+Contracting, and Project Execution enterprise. Certified under 
+ISO 9001:2015, we design, supply, install, commission, and sustain 
+heavy tonnage HVAC systems for corporate parks, super-speciality 
+hospitals, industrial plants, luxury hotels, and critical server rooms.
+
+OPERATIONS SECTOR & CONTACTS
+-----------------------------------------------------------
+- Headquarters: G-14, Sector 49, Sohna Road, Gurugram, Haryana - 122018
+- Direct Helpline: +91 99066 66452
+- Engineering Desk Support: book@supercool.in
+- Representative Offices: Delhi Core, Noida Tech Center, Faridabad Industrial
+
+AUTHORIZED BRAND STATIONS
+-----------------------------------------------------------
+1. DAIKIN COMMERCIAL VRV/VRF STATION
+   - Auth Registration Id: AUTH/DKN/2026/0892
+   - Direct factory-backed 5-Year compressor replacements
+2. VOLTAS HEAVY CHILLER & AHU STATION
+   - Auth Registration Id: AUTH/VLT/2026/0471
+   - TATA Enterprise industrial spares and direct regional backup
+
+CORE TECHNICAL COMPETENCIES / SKILLS
+-----------------------------------------------------------
+- Computational Heat Sizing (CFM & TR)
+- VRV / VRF Variable Multi-Zone Controls
+- Heavy Centralized Water Chiller plants & Condenser rigging
+- Galvanized Rectangular & Spiral Ducting Layout Sheet Metal
+- Cleanroom Positive Air Pressure Integration with UVGI Rings
+- 48-Hour Nitrogen Leak Testing holds at 450 PSI
+
+KEY PROGRESS STATISTICS
+-----------------------------------------------------------
+- 500+ Projects Completed Across India
+- 50+ Top-tier Corporate & Industrial Clients
+- 10,000+ TR Commercial Capacity Installed
+- 24×7 Premium SLA active dispatches for critical server nodes
+
+===========================================================
+CRAFTING UNRIVALED CLIMATE COMFORT WITH SCIENTIFIC RIGOR.
+Registered under Government of India GST, MSME, and ISO guidelines.
+===========================================================`;
+
+    const blob = new Blob([profileContent], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'Super_Cool_Projects_Company_Profile_2026.txt';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   };
 
   // Page Transition Motion Presets
@@ -102,52 +210,58 @@ export default function App() {
                 <Hero onOpenBooking={handleOpenBooking} />
                 <DealerShowcase />
                 
-                {/* Visual section linking inside home to other tabs */}
-                <div className="bg-[#f8fafc] py-10 border-b border-slate-100">
-                  <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div className="bg-white p-6 rounded-2xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition-all">
-                      <div className="space-y-2">
-                        <span className="text-xs font-mono font-bold text-[#1960a3]">01 / SOLUTIONS CATALOG</span>
-                        <h4 className="text-sm font-black text-[#002045] font-sans">Compare HVAC systems & chillers specs</h4>
-                        <p className="text-xs text-slate-500 leading-normal">Explore 9 separate high-capacity climate models direct from Daikin & Voltas channels.</p>
-                      </div>
-                      <button 
-                        onClick={() => { setServicesTab('overview'); handleNavigate('services'); }}
-                        className="text-xs text-[#1960a3] font-extrabold hover:underline pt-4 flex items-center gap-1 cursor-pointer text-left"
-                      >
-                        Browse Services Catalog →
-                      </button>
-                    </div>
-
-                    <div className="bg-white p-6 rounded-2xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition-all">
-                      <div className="space-y-2">
-                        <span className="text-xs font-mono font-bold text-[#1960a3]">02 / TECHNICAL BLUEPRINTS</span>
-                        <h4 className="text-sm font-black text-[#002045] font-sans">Inspect sheet metal and pipeline thicknesses</h4>
-                        <p className="text-xs text-slate-500 leading-normal">Deep-dive into CAD specs, CFM sizing and statutory pressure validation hold levels.</p>
-                      </div>
-                      <button 
-                        onClick={() => { setServicesTab('details'); handleNavigate('services'); }}
-                        className="text-xs text-[#1960a3] font-extrabold hover:underline pt-4 flex items-center gap-1 cursor-pointer text-left"
-                      >
-                        Review Technical Specs →
-                      </button>
-                    </div>
-
-                    <div className="bg-white p-6 rounded-2xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition-all">
-                      <div className="space-y-2">
-                        <span className="text-xs font-mono font-bold text-[#1960a3]">03 / LIVE PROJECT MAPS</span>
-                        <h4 className="text-sm font-black text-[#002045] font-sans">Check live regional site coordinates and client status</h4>
-                        <p className="text-xs text-slate-500 leading-normal">Evaluate previous deployments inside Gurugram Tech zones and south Delhi luxury nodes.</p>
-                      </div>
-                      <button 
-                        onClick={() => handleNavigate('projects')}
-                        className="text-xs text-[#1960a3] font-extrabold hover:underline pt-4 flex items-center gap-1 cursor-pointer text-left"
-                      >
-                        Explore Project Map →
-                      </button>
-                    </div>
-                  </div>
-                </div>
+                 {/* Visual section linking inside home to other tabs */}
+                 <div className="bg-[#f8fafc] py-10 border-b border-slate-100 overflow-hidden">
+                   <div className="max-w-7xl mx-auto px-6">
+                     <p className="text-[10px] font-mono text-slate-400 mb-2 md:hidden flex items-center gap-1">
+                       <span>Swipe to explore specs</span>
+                       <span className="animate-pulse">→</span>
+                     </p>
+                     <div className="flex overflow-x-auto pb-4 gap-6 scrollbar-thin snap-x snap-mandatory -mx-6 px-6 md:mx-0 md:px-0 md:grid md:grid-cols-3 md:pb-0">
+                       <div className="bg-white p-6 rounded-2xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition-all min-w-[280px] w-[80vw] md:w-auto shrink-0 snap-center md:shrink">
+                         <div className="space-y-2">
+                           <span className="text-xs font-mono font-bold text-[#1960a3]">01 / SOLUTIONS CATALOG</span>
+                           <h4 className="text-sm font-black text-[#002045] font-sans">Compare HVAC systems & chillers specs</h4>
+                           <p className="text-xs text-slate-500 leading-normal">Explore 9 separate high-capacity climate models direct from Daikin & Voltas channels.</p>
+                         </div>
+                         <button 
+                           onClick={() => { setServicesTab('overview'); handleNavigate('services'); }}
+                           className="text-xs text-[#1960a3] font-extrabold hover:underline pt-4 flex items-center gap-1 cursor-pointer text-left"
+                         >
+                           Browse Services Catalog →
+                         </button>
+                       </div>
+ 
+                       <div className="bg-white p-6 rounded-2xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition-all min-w-[280px] w-[80vw] md:w-auto shrink-0 snap-center md:shrink">
+                         <div className="space-y-2">
+                           <span className="text-xs font-mono font-bold text-[#1960a3]">02 / TECHNICAL BLUEPRINTS</span>
+                           <h4 className="text-sm font-black text-[#002045] font-sans">Inspect sheet metal and pipeline thicknesses</h4>
+                           <p className="text-xs text-slate-500 leading-normal">Deep-dive into CAD specs, CFM sizing and statutory pressure validation hold levels.</p>
+                         </div>
+                         <button 
+                           onClick={() => { setServicesTab('details'); handleNavigate('services'); }}
+                           className="text-xs text-[#1960a3] font-extrabold hover:underline pt-4 flex items-center gap-1 cursor-pointer text-left"
+                         >
+                           Review Technical Specs →
+                         </button>
+                       </div>
+ 
+                       <div className="bg-white p-6 rounded-2xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition-all min-w-[280px] w-[80vw] md:w-auto shrink-0 snap-center md:shrink">
+                         <div className="space-y-2">
+                           <span className="text-xs font-mono font-bold text-[#1960a3]">03 / LIVE PROJECT MAPS</span>
+                           <h4 className="text-sm font-black text-[#002045] font-sans">Check live regional site coordinates and client status</h4>
+                           <p className="text-xs text-slate-500 leading-normal">Evaluate previous deployments inside Gurugram Tech zones and south Delhi luxury nodes.</p>
+                         </div>
+                         <button 
+                           onClick={() => handleNavigate('projects')}
+                           className="text-xs text-[#1960a3] font-extrabold hover:underline pt-4 flex items-center gap-1 cursor-pointer text-left"
+                         >
+                           Explore Project Map →
+                         </button>
+                       </div>
+                     </div>
+                   </div>
+                 </div>
 
                 <WhyChooseUs />
                 <CapacityCalculator onTriggerSurvey={handleOpenBooking} />
@@ -155,6 +269,62 @@ export default function App() {
                 {/* Fast Callback call-out */}
                 <div className="py-12 bg-white">
                   <CallbackForm />
+                </div>
+
+                {/* Corporate Profile PDF Dossier Downloader Section */}
+                <div className="py-16 bg-slate-50 border-t border-b border-slate-200">
+                  <div className="max-w-4xl mx-auto px-6 text-center space-y-6">
+                    <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-amber-100 text-amber-600 mb-2">
+                      <FileText className="w-6 h-6" />
+                    </div>
+                    <span className="block text-xs font-mono font-bold tracking-widest text-[#1960a3] uppercase">
+                      OFFICIAL VENDOR CREDENTIALS
+                    </span>
+                    <h2 className="text-2xl sm:text-3xl font-black font-sans text-[#002045] leading-tight max-w-2xl mx-auto">
+                      Download Our Complete Corporate HVAC Profile Dossier
+                    </h2>
+                    <p className="text-xs sm:text-sm text-slate-600 max-w-2xl mx-auto leading-relaxed">
+                      Access our verified company registration records, technical competencies, SLA emergency maintenance timelines, and authorized channel partner configurations with Daikin and Voltas. Essential documentation for commercial bid submissions and facility managers.
+                    </p>
+                    
+                    {/* Features grid list */}
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl mx-auto text-left pt-4">
+                      <div className="bg-white p-3.5 rounded-xl border border-slate-200 flex items-start gap-2.5">
+                        <span className="text-emerald-500 font-bold text-sm">✓</span>
+                        <div>
+                          <h4 className="text-xs font-bold text-slate-800 font-sans">Authorized Certifications</h4>
+                          <p className="text-[10px] text-slate-500 font-sans">Daikin Platinum Dealer & Voltas Industrial Partner IDs included.</p>
+                        </div>
+                      </div>
+                      <div className="bg-white p-3.5 rounded-xl border border-slate-200 flex items-start gap-2.5">
+                        <span className="text-emerald-500 font-bold text-sm">✓</span>
+                        <div>
+                          <h4 className="text-xs font-bold text-slate-800 font-sans">Technical Capacities</h4>
+                          <p className="text-[10px] text-slate-500 font-sans">Full specs list on VRV multi-zone & heavy central layouts.</p>
+                        </div>
+                      </div>
+                      <div className="bg-white p-3.5 rounded-xl border border-slate-200 flex items-start gap-2.5">
+                        <span className="text-emerald-500 font-bold text-sm">✓</span>
+                        <div>
+                          <h4 className="text-xs font-bold text-slate-800 font-sans">Statutory Compliances</h4>
+                          <p className="text-[10px] text-slate-500 font-sans">ISO 9001 quality audit checklist, GST registration, MSME status.</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="pt-6">
+                      <button
+                        onClick={handleDownloadProfile}
+                        className="inline-flex items-center gap-2 bg-[#002045] hover:bg-[#1960a3] text-white px-8 py-3.5 rounded-2xl font-black text-xs sm:text-sm shadow-lg hover:shadow-xl transition-all cursor-pointer uppercase tracking-wider"
+                      >
+                        <Download className="w-4 h-4 text-emerald-400" />
+                        Download Company Profile PDF (Dossier)
+                      </button>
+                      <p className="text-[10px] text-slate-400 mt-2.5 font-mono">
+                        Super_Cool_Projects_Company_Profile_2026.txt • Clean Text Format • 4.8MB Equivalent
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
             )}

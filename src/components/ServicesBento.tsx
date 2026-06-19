@@ -157,11 +157,15 @@ export default function ServicesBento({ onOpenBookingWithCategory }: ServicesBen
         </div>
 
         {/* 9 Card Grid - responsive 2 columns layout */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <p className="text-[10px] font-mono text-slate-400 mb-2 md:hidden flex items-center gap-1">
+          <span>Swipe to explore services catalog</span>
+          <span className="animate-pulse">→</span>
+        </p>
+        <div className="flex overflow-x-auto pb-4 gap-6 scrollbar-thin snap-x snap-mandatory -mx-6 px-6 md:mx-0 md:px-0 md:grid md:grid-cols-2 md:gap-8">
           {services.map((srv) => (
             <div 
               key={srv.id} 
-              className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between group"
+              className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between group min-w-[280px] w-[80vw] md:w-auto shrink-0 snap-center md:shrink"
             >
               {/* Product Visual */}
               <div className="relative h-48 overflow-hidden bg-slate-100 border-b border-slate-100 shrink-0">

@@ -191,7 +191,11 @@ export default function IndustriesServed({ onTriggerSurveyWithIndustry }: Indust
         </div>
 
         {/* 2-Column Modern Grid Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <p className="text-[10px] font-mono text-slate-400 mb-2 md:hidden flex items-center gap-1">
+          <span>Swipe to explore industries</span>
+          <span className="animate-pulse">→</span>
+        </p>
+        <div className="flex overflow-x-auto pb-4 gap-6 scrollbar-thin snap-x snap-mandatory -mx-6 px-6 md:mx-0 md:px-0 md:grid md:grid-cols-2 md:gap-6">
           {industries.map((ind, idx) => {
             const IconComp = ind.icon;
             
@@ -199,7 +203,7 @@ export default function IndustriesServed({ onTriggerSurveyWithIndustry }: Indust
               <button
                 key={ind.id}
                 onClick={() => setSelectedIdx(idx)}
-                className="p-6 rounded-2xl border border-slate-200 bg-white text-left transition-all duration-300 relative overflow-hidden flex flex-col justify-between group cursor-pointer hover:border-[#1960a3]/50 hover:shadow-xl hover:-translate-y-1"
+                className="p-6 rounded-2xl border border-slate-200 bg-white text-left transition-all duration-300 relative overflow-hidden flex flex-col justify-between group cursor-pointer hover:border-[#1960a3]/50 hover:shadow-xl hover:-translate-y-1 min-w-[280px] w-[80vw] md:w-auto shrink-0 snap-center md:shrink"
               >
                 {/* Subtle colored background backdrop glow on hover */}
                 <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${ind.color} opacity-[0.02] group-hover:opacity-[0.06] blur-2xl transition-opacity pointer-events-none`} />

@@ -46,69 +46,6 @@ export default function Header({ onOpenBooking, onOpenMyBookings, activePage, on
     };
   }, []);
 
-  const handleDownloadProfile = (e: React.MouseEvent) => {
-    e.preventDefault();
-    const profileContent = `===========================================================
-KD AC | SUPER COOL PROJECTS PRIVATE LIMITED - COMPANY PROFILE 2026
-===========================================================
-DIRECT PLATINUM PARTNER: DAIKIN & VOLTAS COMMERCIAL HVAC
-
-ABOUT US
------------------------------------------------------------
-KD AC | Super Cool Projects is Northern India's premier HVAC Engineering, 
-Contracting, and Project Execution enterprise. Certified under 
-ISO 9001:2015, we design, supply, install, commission, and sustain 
-heavy tonnage HVAC systems for corporate parks, super-speciality 
-hospitals, industrial plants, luxury hotels, and critical server rooms.
-
-OPERATIONS SECTOR & CONTACTS
------------------------------------------------------------
-- Headquarters: G-14, Sector 49, Sohna Road, Gurugram, Haryana - 122018
-- Direct Helpline: +91 99066 66452
-- Engineering Desk Support: book@supercool.in
-- Representative Offices: Delhi Core, Noida Tech Center, Faridabad Industrial
-
-AUTHORIZED BRAND STATIONS
------------------------------------------------------------
-1. DAIKIN COMMERCIAL VRV/VRF STATION
-   - Auth Registration Id: AUTH/DKN/2026/0892
-   - Direct factory-backed 5-Year compressor replacements
-2. VOLTAS HEAVY CHILLER & AHU STATION
-   - Auth Registration Id: AUTH/VLT/2026/0471
-   - TATA Enterprise industrial spares and direct regional backup
-
-CORE TECHNICAL COMPETENCIES / SKILLS
------------------------------------------------------------
-- Computational Heat Sizing (CFM & TR)
-- VRV / VRF Variable Multi-Zone Controls
-- Heavy Centralized Water Chiller plants & Condenser rigging
-- Galvanized Rectangular & Spiral Ducting Layout Sheet Metal
-- Cleanroom Positive Air Pressure Integration with UVGI Rings
-- 48-Hour Nitrogen Leak Testing holds at 450 PSI
-
-KEY PROGRESS STATISTICS
------------------------------------------------------------
-- 500+ Projects Completed Across India
-- 50+ Top-tier Corporate & Industrial Clients
-- 10,000+ TR Commercial Capacity Installed
-- 24×7 Premium SLA active dispatches for critical server nodes
-
-===========================================================
-CRAFTING UNRIVALED CLIMATE COMFORT WITH SCIENTIFIC RIGOR.
-Registered under Government of India GST, MSME, and ISO guidelines.
-===========================================================`;
-
-    const blob = new Blob([profileContent], { type: 'text/plain;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'Super_Cool_Projects_Company_Profile_2026.txt';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-  };
-
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, page: string) => {
     e.preventDefault();
     setMobileMenuOpen(false);
@@ -154,12 +91,6 @@ Registered under Government of India GST, MSME, and ISO guidelines.
               </div>
             </div>
           </div>
-          <button
-            onClick={handleDownloadProfile}
-            className="text-[10px] bg-amber-400 font-black px-2.5 py-0.5 rounded text-[#002045] hover:bg-amber-300 transition-all font-mono uppercase tracking-wide shrink-0 cursor-pointer"
-          >
-            Download Profile PDF
-          </button>
         </div>
       </div>
 

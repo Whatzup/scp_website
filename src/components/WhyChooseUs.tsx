@@ -154,14 +154,18 @@ export default function WhyChooseUs() {
         </div>
 
         {/* 8-Grid of Verified Credentials */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <p className="text-[10px] font-mono text-slate-400 mb-2 md:hidden flex items-center gap-1">
+          <span>Swipe to see our credentials</span>
+          <span className="animate-pulse">→</span>
+        </p>
+        <div className="flex overflow-x-auto pb-4 gap-6 scrollbar-thin snap-x snap-mandatory -mx-6 px-6 md:mx-0 md:px-0 md:grid md:grid-cols-2 md:pb-0">
           {whyChooseItems.map((item) => {
             const IconComp = item.icon;
             return (
               <button 
                 key={item.id}
                 onClick={() => setSelectedItem(item)}
-                className="bg-white rounded-2xl border border-slate-205 p-6 flex flex-col justify-between hover:shadow-2xl hover:border-sky-305 transition-all duration-350 cursor-pointer group hover:-translate-y-1.5 relative overflow-hidden text-left w-full"
+                className="bg-white rounded-2xl border border-slate-205 p-6 flex flex-col justify-between hover:shadow-2xl hover:border-sky-305 transition-all duration-350 cursor-pointer group hover:-translate-y-1.5 relative overflow-hidden text-left min-w-[280px] w-[80vw] md:w-auto shrink-0 snap-center md:shrink"
               >
                 {/* Visual Accent */}
                 <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-slate-100 to-transparent -mr-6 -mt-6 rounded-full group-hover:scale-125 transition-transform" />
@@ -225,12 +229,13 @@ export default function WhyChooseUs() {
 
       {/* Energy Tips Popover Modal */}
       {showTips && (
-        <div className="fixed inset-0 bg-[#002045]/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-2xl overflow-hidden shadow-2xl border border-sky-100 max-w-lg w-full relative">
+        <div className="fixed inset-0 bg-[#002045]/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 overflow-y-auto">
+          <div className="bg-white rounded-2xl shadow-2xl border border-sky-100 max-w-lg w-full relative max-h-[90vh] flex flex-col overflow-y-auto">
             <button
               onClick={() => setShowTips(false)}
-              className="absolute top-4 right-4 text-slate-400 hover:text-slate-700 hover:bg-slate-50 p-1.5 rounded-full transition-colors cursor-pointer"
+              className="absolute top-3 right-3 text-slate-400 hover:text-slate-700 bg-slate-100 w-10 h-10 flex items-center justify-center rounded-full transition-colors cursor-pointer z-50"
               id="close-tips-modal-btn"
+              aria-label="Close"
             >
               <X className="w-5 h-5" />
             </button>
@@ -273,11 +278,12 @@ export default function WhyChooseUs() {
 
       {/* Credential Details Popover Modal */}
       {selectedItem && (
-        <div className="fixed inset-0 bg-[#00132c]/80 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-3xl overflow-hidden shadow-2xl border border-sky-100 max-w-lg w-full relative">
+        <div className="fixed inset-0 bg-[#00132c]/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 overflow-y-auto">
+          <div className="bg-white rounded-3xl shadow-2xl border border-sky-100 max-w-lg w-full relative max-h-[90vh] flex flex-col overflow-y-auto">
             <button
               onClick={() => setSelectedItem(null)}
-              className="absolute top-4 right-4 text-slate-400 hover:text-slate-700 hover:bg-slate-50 p-1.5 rounded-full transition-colors cursor-pointer"
+              className="absolute top-3 right-3 text-slate-400 hover:text-slate-700 bg-slate-100 w-10 h-10 flex items-center justify-center rounded-full transition-colors cursor-pointer z-50"
+              aria-label="Close"
             >
               <X className="w-5 h-5" />
             </button>

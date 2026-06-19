@@ -62,12 +62,16 @@ export default function DealerShowcase({ onNavigateToPortal }: DealerShowcasePro
         </div>
 
         {/* Minimal Symmetrical Clickable Grid for Daikin and Voltas with Background Buildings */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        <p className="text-[10px] font-mono text-slate-400 mb-2 text-center md:hidden flex items-center justify-center gap-1">
+          <span>Swipe to view brand certificates</span>
+          <span className="animate-pulse">→</span>
+        </p>
+        <div className="flex overflow-x-auto pb-4 gap-6 scrollbar-thin snap-x snap-mandatory -mx-6 px-6 md:mx-0 md:px-0 md:grid md:grid-cols-2 md:gap-8 max-w-4xl mx-auto">
           {BRANDS_SHOWCASE.map((brand) => (
             <button 
               key={brand.id}
               onClick={() => setSelectedBrand(brand)}
-              className="relative w-full min-h-[300px] rounded-3xl overflow-hidden p-6 sm:p-8 text-left transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 group flex flex-col justify-between border border-[#001c3d]/25 cursor-pointer shadow-lg"
+              className="relative min-w-[280px] w-[80vw] md:w-auto shrink-0 snap-center md:shrink min-h-[300px] rounded-3xl overflow-hidden p-6 sm:p-8 text-left transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 group flex flex-col justify-between border border-[#001c3d]/25 cursor-pointer shadow-lg"
             >
               {/* Core Building Image as Background of Tile */}
               <div 
@@ -140,11 +144,12 @@ export default function DealerShowcase({ onNavigateToPortal }: DealerShowcasePro
 
       {/* Local Brand Certificate popover modal */}
       {selectedBrand && (
-        <div className="fixed inset-0 bg-[#0F172A]/85 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-fade-in">
-          <div className="bg-[#00132c] rounded-2xl overflow-hidden shadow-2xl border-2 border-amber-400 max-w-lg w-full relative p-6 sm:p-8 font-sans text-white">
+        <div className="fixed inset-0 bg-[#0F172A]/85 backdrop-blur-md flex items-center justify-center p-4 z-50 overflow-y-auto animate-fade-in">
+          <div className="bg-[#00132c] rounded-2xl shadow-2xl border-2 border-amber-400 max-w-lg w-full relative p-4 sm:p-8 font-sans text-white max-h-[92vh] flex flex-col overflow-y-auto">
             <button
               onClick={() => setSelectedBrand(null)}
-              className="absolute top-4 right-4 text-slate-400 hover:text-white bg-[#000d1f] p-1.5 rounded-full border border-[#002b54] transition-colors cursor-pointer"
+              className="absolute top-3 right-3 text-slate-400 hover:text-white bg-[#000d1f] w-10 h-10 flex items-center justify-center rounded-full border border-[#002b54] transition-colors cursor-pointer z-50"
+              aria-label="Close certificate"
             >
               <X className="w-5 h-5" />
             </button>

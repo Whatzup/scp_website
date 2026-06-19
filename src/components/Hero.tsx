@@ -37,12 +37,12 @@ export default function Hero({ onOpenBooking }: HeroProps) {
           <div className="space-y-6 lg:col-span-7">
             
             {/* OFFICIAL ACCREDITATIONS & BRAND AUTHORIZATIONS */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-2 pb-2 border-b border-white/5">
+            <div className="flex flex-col-reverse sm:flex-row sm:items-center justify-between gap-4 mb-2 pb-2 border-b border-white/5">
               <div className="space-y-2 flex-1">
-                <p className="text-[10px] sm:text-xs font-bold text-sky-300 tracking-widest uppercase">
+                <p className="text-[10px] sm:text-xs font-bold text-sky-300 tracking-widest uppercase text-center sm:text-left">
                   ⚙️ OFFICIAL ACCREDITATIONS & BRAND AUTHORIZATIONS
                 </p>
-                <div className="flex flex-wrap gap-2.5">
+                <div className="flex flex-wrap gap-2.5 justify-center sm:justify-start">
                   {/* GST Registered Button */}
                   <button
                     onClick={() => setAccreditationDetail('gst')}
@@ -74,7 +74,7 @@ export default function Hero({ onOpenBooking }: HeroProps) {
                   </button>
                 </div>
               </div>
-              <div className="shrink-0 flex items-center justify-start sm:justify-end">
+              <div className="shrink-0 flex items-center justify-center sm:justify-end py-2">
                 <Logo size={100} className="hover:rotate-12 transition-transform duration-300 drop-shadow-[0_0_15px_rgba(56,189,248,0.2)]" />
               </div>
             </div>

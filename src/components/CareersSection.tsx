@@ -58,11 +58,15 @@ export default function CareersSection() {
         </div>
 
         {/* 4 Columns Careers Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <p className="text-[10px] font-mono text-slate-400 mb-2 text-center md:hidden flex items-center justify-center gap-1">
+          <span>Swipe to check open vacancies</span>
+          <span className="animate-pulse">→</span>
+        </p>
+        <div className="flex overflow-x-auto pb-4 gap-6 scrollbar-thin snap-x snap-mandatory -mx-6 px-6 md:mx-0 md:px-0 md:grid md:grid-cols-2 lg:grid-cols-4 md:gap-6">
           {CAREER_OPPORTUNITIES.map((job) => (
             <div 
               key={job.id} 
-              className="bg-[#000a18] border border-[#001c3d] p-6 rounded-2xl flex flex-col justify-between hover:border-emerald-500/20 transition-all group shadow-sm hover:shadow-xl"
+              className="bg-[#000a18] border border-[#001c3d] p-6 rounded-2xl flex flex-col justify-between hover:border-emerald-500/20 transition-all group shadow-sm hover:shadow-xl min-w-[280px] w-[80vw] md:w-auto shrink-0 snap-center md:shrink"
             >
               <div className="space-y-4">
                 <div className="flex justify-between items-center bg-[#00132c]/65 p-2.5 rounded-xl border border-[#001c3d]/40">
@@ -117,8 +121,9 @@ export default function CareersSection() {
               </div>
               <button
                 onClick={() => setSelectedRole(null)}
-                className="p-1 rounded-full hover:bg-white/10 text-white transition-colors"
+                className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-white/10 text-white transition-colors cursor-pointer"
                 id="close-careers-modal"
+                aria-label="Close"
               >
                 <X className="w-5 h-5" />
               </button>
