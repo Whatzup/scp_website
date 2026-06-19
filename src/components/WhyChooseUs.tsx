@@ -165,7 +165,7 @@ export default function WhyChooseUs() {
               <button 
                 key={item.id}
                 onClick={() => setSelectedItem(item)}
-                className="bg-white rounded-2xl border border-slate-205 p-6 flex flex-col justify-between hover:shadow-2xl hover:border-sky-305 transition-all duration-350 cursor-pointer group hover:-translate-y-1.5 relative overflow-hidden text-left min-w-[280px] w-[80vw] md:w-auto shrink-0 snap-center md:shrink"
+                className="bg-white rounded-2xl border border-slate-205 p-6 flex flex-col justify-between hover:shadow-2xl hover:border-sky-305 transition-all duration-350 cursor-pointer group hover:-translate-y-1.5 relative overflow-hidden text-left min-w-[240px] w-[82vw] md:w-auto shrink-0 snap-center md:shrink"
               >
                 {/* Visual Accent */}
                 <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-slate-100 to-transparent -mr-6 -mt-6 rounded-full group-hover:scale-125 transition-transform" />
@@ -203,6 +203,15 @@ export default function WhyChooseUs() {
               </button>
             );
           })}
+        </div>
+
+        {/* Swipe Progress Track for Mobile */}
+        <div className="flex md:hidden items-center justify-center gap-1.5 mt-2">
+          <span className="text-[10px] font-mono text-slate-400">Swipe</span>
+          <div className="w-16 h-1 rounded-full bg-slate-200 overflow-hidden relative">
+            <div className="absolute top-0 left-0 bottom-0 bg-[#1960a3] w-1/2 animate-[pulse_1.5s_infinite]" />
+          </div>
+          <span className="text-[10px] font-mono text-slate-400">to explore credentials</span>
         </div>
 
         {/* Call to action & Efficiency Guideline Anchor */}

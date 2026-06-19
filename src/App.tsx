@@ -218,7 +218,7 @@ Registered under Government of India GST, MSME, and ISO guidelines.
                        <span className="animate-pulse">→</span>
                      </p>
                      <div className="flex overflow-x-auto pb-4 gap-6 scrollbar-thin snap-x snap-mandatory -mx-6 px-6 md:mx-0 md:px-0 md:grid md:grid-cols-3 md:pb-0">
-                       <div className="bg-white p-6 rounded-2xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition-all min-w-[280px] w-[80vw] md:w-auto shrink-0 snap-center md:shrink">
+                       <div className="bg-white p-6 rounded-2xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition-all min-w-[240px] w-[82vw] md:w-auto shrink-0 snap-center md:shrink">
                          <div className="space-y-2">
                            <span className="text-xs font-mono font-bold text-[#1960a3]">01 / SOLUTIONS CATALOG</span>
                            <h4 className="text-sm font-black text-[#002045] font-sans">Compare HVAC systems & chillers specs</h4>
@@ -232,7 +232,7 @@ Registered under Government of India GST, MSME, and ISO guidelines.
                          </button>
                        </div>
  
-                       <div className="bg-white p-6 rounded-2xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition-all min-w-[280px] w-[80vw] md:w-auto shrink-0 snap-center md:shrink">
+                       <div className="bg-white p-6 rounded-2xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition-all min-w-[240px] w-[82vw] md:w-auto shrink-0 snap-center md:shrink">
                          <div className="space-y-2">
                            <span className="text-xs font-mono font-bold text-[#1960a3]">02 / TECHNICAL BLUEPRINTS</span>
                            <h4 className="text-sm font-black text-[#002045] font-sans">Inspect sheet metal and pipeline thicknesses</h4>
@@ -246,7 +246,7 @@ Registered under Government of India GST, MSME, and ISO guidelines.
                          </button>
                        </div>
  
-                       <div className="bg-white p-6 rounded-2xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition-all min-w-[280px] w-[80vw] md:w-auto shrink-0 snap-center md:shrink">
+                       <div className="bg-white p-6 rounded-2xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition-all min-w-[240px] w-[82vw] md:w-auto shrink-0 snap-center md:shrink">
                          <div className="space-y-2">
                            <span className="text-xs font-mono font-bold text-[#1960a3]">03 / LIVE PROJECT MAPS</span>
                            <h4 className="text-sm font-black text-[#002045] font-sans">Check live regional site coordinates and client status</h4>
@@ -259,6 +259,14 @@ Registered under Government of India GST, MSME, and ISO guidelines.
                            Explore Project Map →
                          </button>
                        </div>
+                     </div>
+                     {/* Swipe Progress Track for Mobile */}
+                     <div className="flex md:hidden items-center justify-center gap-1.5 mt-2">
+                       <span className="text-[10px] font-mono text-slate-400">Swipe</span>
+                       <div className="w-16 h-1 rounded-full bg-slate-200 overflow-hidden relative">
+                         <div className="absolute top-0 left-0 bottom-0 bg-[#1960a3] w-1/2 animate-[pulse_1.5s_infinite]" />
+                       </div>
+                       <span className="text-[10px] font-mono text-slate-400">to browse specs</span>
                      </div>
                    </div>
                  </div>

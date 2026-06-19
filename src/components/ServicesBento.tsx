@@ -165,7 +165,7 @@ export default function ServicesBento({ onOpenBookingWithCategory }: ServicesBen
           {services.map((srv) => (
             <div 
               key={srv.id} 
-              className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between group min-w-[280px] w-[80vw] md:w-auto shrink-0 snap-center md:shrink"
+              className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between group min-w-[240px] w-[82vw] md:w-auto shrink-0 snap-center md:shrink"
             >
               {/* Product Visual */}
               <div className="relative h-48 overflow-hidden bg-slate-100 border-b border-slate-100 shrink-0">
@@ -219,6 +219,16 @@ export default function ServicesBento({ onOpenBookingWithCategory }: ServicesBen
             </div>
           ))}
         </div>
+
+        {/* Swipe Progress Track for Mobile */}
+        <div className="flex md:hidden items-center justify-center gap-1.5 mt-2">
+          <span className="text-[10px] font-mono text-slate-400">Swipe</span>
+          <div className="w-16 h-1 rounded-full bg-slate-200 overflow-hidden relative">
+            <div className="absolute top-0 left-0 bottom-0 bg-[#1960a3] w-1/2 animate-[pulse_1.5s_infinite]" />
+          </div>
+          <span className="text-[10px] font-mono text-slate-400">to browse systems</span>
+        </div>
+
       </div>
 
       {/* Services Specification Popover Info Modal */}

@@ -66,7 +66,7 @@ export default function CareersSection() {
           {CAREER_OPPORTUNITIES.map((job) => (
             <div 
               key={job.id} 
-              className="bg-[#000a18] border border-[#001c3d] p-6 rounded-2xl flex flex-col justify-between hover:border-emerald-500/20 transition-all group shadow-sm hover:shadow-xl min-w-[280px] w-[80vw] md:w-auto shrink-0 snap-center md:shrink"
+              className="bg-[#000a18] border border-[#001c3d] p-6 rounded-2xl flex flex-col justify-between hover:border-emerald-500/20 transition-all group shadow-sm hover:shadow-xl min-w-[240px] w-[82vw] md:w-auto shrink-0 snap-center md:shrink"
             >
               <div className="space-y-4">
                 <div className="flex justify-between items-center bg-[#00132c]/65 p-2.5 rounded-xl border border-[#001c3d]/40">
@@ -101,6 +101,15 @@ export default function CareersSection() {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* Swipe Progress Track for Mobile */}
+        <div className="flex md:hidden items-center justify-center gap-1.5 mt-2">
+          <span className="text-[10px] font-mono text-slate-400">Swipe</span>
+          <div className="w-16 h-1 rounded-full bg-slate-800 overflow-hidden relative">
+            <div className="absolute top-0 left-0 bottom-0 bg-emerald-400 w-1/2 animate-[pulse_1.5s_infinite]" />
+          </div>
+          <span className="text-[10px] font-mono text-slate-400">to browse vacancies</span>
         </div>
 
       </div>

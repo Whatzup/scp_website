@@ -203,7 +203,7 @@ export default function IndustriesServed({ onTriggerSurveyWithIndustry }: Indust
               <button
                 key={ind.id}
                 onClick={() => setSelectedIdx(idx)}
-                className="p-6 rounded-2xl border border-slate-200 bg-white text-left transition-all duration-300 relative overflow-hidden flex flex-col justify-between group cursor-pointer hover:border-[#1960a3]/50 hover:shadow-xl hover:-translate-y-1 min-w-[280px] w-[80vw] md:w-auto shrink-0 snap-center md:shrink"
+                className="p-6 rounded-2xl border border-slate-200 bg-white text-left transition-all duration-300 relative overflow-hidden flex flex-col justify-between group cursor-pointer hover:border-[#1960a3]/50 hover:shadow-xl hover:-translate-y-1 min-w-[240px] w-[82vw] md:w-auto shrink-0 snap-center md:shrink"
               >
                 {/* Subtle colored background backdrop glow on hover */}
                 <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${ind.color} opacity-[0.02] group-hover:opacity-[0.06] blur-2xl transition-opacity pointer-events-none`} />
@@ -233,6 +233,15 @@ export default function IndustriesServed({ onTriggerSurveyWithIndustry }: Indust
               </button>
             );
           })}
+        </div>
+
+        {/* Swipe Progress Track for Mobile */}
+        <div className="flex md:hidden items-center justify-center gap-1.5 mt-2">
+          <span className="text-[10px] font-mono text-slate-400">Swipe</span>
+          <div className="w-16 h-1 rounded-full bg-slate-200 overflow-hidden relative">
+            <div className="absolute top-0 left-0 bottom-0 bg-[#1960a3] w-1/2 animate-[pulse_1.5s_infinite]" />
+          </div>
+          <span className="text-[10px] font-mono text-slate-400">to explore industries</span>
         </div>
 
         {/* High-fidelity Modal Overlay Blueprint container */}

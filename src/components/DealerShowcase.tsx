@@ -71,7 +71,7 @@ export default function DealerShowcase({ onNavigateToPortal }: DealerShowcasePro
             <button 
               key={brand.id}
               onClick={() => setSelectedBrand(brand)}
-              className="relative min-w-[280px] w-[80vw] md:w-auto shrink-0 snap-center md:shrink min-h-[300px] rounded-3xl overflow-hidden p-6 sm:p-8 text-left transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 group flex flex-col justify-between border border-[#001c3d]/25 cursor-pointer shadow-lg"
+              className="relative min-w-[240px] w-[82vw] md:w-auto shrink-0 snap-center md:shrink min-h-[300px] rounded-3xl overflow-hidden p-6 sm:p-8 text-left transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 group flex flex-col justify-between border border-[#001c3d]/25 cursor-pointer shadow-lg"
             >
               {/* Core Building Image as Background of Tile */}
               <div 
@@ -138,6 +138,15 @@ export default function DealerShowcase({ onNavigateToPortal }: DealerShowcasePro
 
             </button>
           ))}
+        </div>
+
+        {/* Swipe Progress Track for Mobile */}
+        <div className="flex md:hidden items-center justify-center gap-1.5 mt-2">
+          <span className="text-[10px] font-mono text-slate-400">Swipe</span>
+          <div className="w-16 h-1 rounded-full bg-slate-200 overflow-hidden relative">
+            <div className="absolute top-0 left-0 bottom-0 bg-[#1960a3] w-1/2 animate-[pulse_1.5s_infinite]" />
+          </div>
+          <span className="text-[10px] font-mono text-slate-400">to view brand info</span>
         </div>
 
       </div>
