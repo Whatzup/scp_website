@@ -64,7 +64,7 @@ export default function ClientLogos() {
           {categories.map((cat, idx) => (
             <div 
               key={idx} 
-              className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 space-y-6 hover:shadow-lg transition-transform hover:-translate-y-0.5 duration-300"
+              className="bg-white rounded-2xl border border-slate-205 p-6 sm:p-8 space-y-6 hover:shadow-2xl hover:border-sky-305 transition-all duration-350 hover:-translate-y-1.5"
             >
               <div className="space-y-1.5 border-b border-slate-100 pb-4">
                 <h3 className="font-sans font-black text-base text-[#002045] tracking-tight flex items-center gap-2">

@@ -79,7 +79,7 @@ export default function CapacityCalculator({ onTriggerSurvey }: CapacityCalculat
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
           
           {/* Card 1: Capacity Calculator Inputs */}
-          <div className="lg:col-span-4 bg-[#f7fafc] border border-slate-200 p-6 sm:p-8 rounded-2xl flex flex-col justify-between space-y-6">
+          <div className="lg:col-span-4 bg-[#f7fafc] border border-slate-205 hover:border-sky-305 transition-all duration-350 hover:shadow-2xl p-6 sm:p-8 rounded-2xl flex flex-col justify-between space-y-6">
             <div>
               <div className="flex items-center gap-2 text-[#002045] font-extrabold text-lg mb-6 border-b pb-3 border-slate-200">
                 <Calculator className="w-6 h-6 text-[#1960a3]" />

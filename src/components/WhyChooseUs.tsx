@@ -4,6 +4,14 @@ import { Clock, Bolt, Check, X, ShieldCheck, Zap, Thermometer, Award, Navigation
 export default function WhyChooseUs() {
   const [showTips, setShowTips] = useState(false);
   const [selectedItem, setSelectedItem] = useState<any>(null);
+  const [scrollIdx, setScrollIdx] = useState(0);
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const scrollLeft = e.currentTarget.scrollLeft;
+    const clientWidth = e.currentTarget.clientWidth;
+    if (clientWidth > 0) {
+      setScrollIdx(Math.min(whyChooseItems.length - 1, Math.max(0, Math.round(scrollLeft / (clientWidth * 0.8)))));
+    }
+  };
 
   const whyChooseItems = [
     {
@@ -158,7 +166,7 @@ export default function WhyChooseUs() {
           <span>Swipe to see our credentials</span>
           <span className="animate-pulse">→</span>
         </p>
-        <div className="flex overflow-x-auto pb-4 gap-6 scrollbar-thin snap-x snap-mandatory -mx-6 px-6 md:mx-0 md:px-0 md:grid md:grid-cols-2 md:pb-0">
+        <div onScroll={handleScroll} className="flex overflow-x-auto pb-4 gap-6 scrollbar-thin snap-x snap-mandatory -mx-6 px-6 md:mx-0 md:px-0 md:grid md:grid-cols-2 md:pb-0">
           {whyChooseItems.map((item) => {
             const IconComp = item.icon;
             return (
@@ -205,13 +213,27 @@ export default function WhyChooseUs() {
           })}
         </div>
 
-        {/* Swipe Progress Track for Mobile */}
-        <div className="flex md:hidden items-center justify-center gap-1.5 mt-2">
-          <span className="text-[10px] font-mono text-slate-400">Swipe</span>
-          <div className="w-16 h-1 rounded-full bg-slate-200 overflow-hidden relative">
-            <div className="absolute top-0 left-0 bottom-0 bg-[#1960a3] w-1/2 animate-[pulse_1.5s_infinite]" />
+        {/* Swipe Progress Track for Mobile with Indicators */}
+        <div className="flex md:hidden flex-col items-center justify-center gap-2 mt-2">
+          <div className="flex items-center gap-1.5 select-none text-sm font-bold font-mono">
+            {whyChooseItems.map((item, idx) => (
+              <span
+                key={item.id}
+                className={`transition-all duration-300 ${
+                  scrollIdx === idx ? 'text-[#1960a3] scale-125 font-bold' : 'text-slate-300'
+                }`}
+              >
+                {scrollIdx === idx ? '●' : '○'}
+              </span>
+            ))}
           </div>
-          <span className="text-[10px] font-mono text-slate-400">to explore credentials</span>
+          <div className="flex items-center justify-center gap-1.5">
+            <span className="text-[10px] font-mono text-slate-400">Swipe</span>
+            <div className="w-16 h-1 rounded-full bg-slate-200 overflow-hidden relative">
+              <div className="absolute top-0 left-0 bottom-0 bg-[#1960a3] w-1/2 animate-[pulse_1.5s_infinite]" />
+            </div>
+            <span className="text-[10px] font-mono text-slate-400">to explore credentials</span>
+          </div>
         </div>
 
         {/* Call to action & Efficiency Guideline Anchor */}

@@ -241,7 +241,7 @@ export default function ServiceDetailPage({
                   setActiveServiceId(tab.id);
                   setIsOpen(true);
                 }}
-                className="p-5 sm:p-6 rounded-2xl border border-slate-200 bg-white text-left transition-all duration-300 relative overflow-hidden flex flex-col md:flex-row items-start md:items-center justify-between gap-4 group cursor-pointer hover:border-[#1960a3]/50 hover:shadow-lg hover:-translate-y-0.5"
+                className="p-5 sm:p-6 rounded-2xl border border-slate-205 bg-white text-left transition-all duration-350 relative overflow-hidden flex flex-col md:flex-row items-start md:items-center justify-between gap-4 group cursor-pointer hover:border-sky-305 hover:shadow-2xl hover:-translate-y-1.5"
               >
                 {/* Visual decoration backdrop glow */}
                 <div className="absolute top-0 right-0 w-44 h-44 bg-gradient-to-br from-[#1960a3]/5 to-transparent opacity-[0.02] group-hover:opacity-[0.06] blur-2xl pointer-events-none" />

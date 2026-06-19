@@ -49,6 +49,15 @@ export default function App() {
   const [selectedServiceId, setSelectedServiceId] = useState<string>('vrv-installation');
   const [autoOpenDetail, setAutoOpenDetail] = useState<boolean>(false);
 
+  const [specsScrollIdx, setSpecsScrollIdx] = useState(0);
+  const handleSpecsScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const scrollLeft = e.currentTarget.scrollLeft;
+    const clientWidth = e.currentTarget.clientWidth;
+    if (clientWidth > 0) {
+      setSpecsScrollIdx(Math.min(2, Math.max(0, Math.round(scrollLeft / (clientWidth * 0.8)))));
+    }
+  };
+
   // Sync page state with URL hashes for native browser navigation, bookmarks, and sharing
   useEffect(() => {
     const handleHashChange = () => {
@@ -217,8 +226,8 @@ Registered under Government of India GST, MSME, and ISO guidelines.
                        <span>Swipe to explore specs</span>
                        <span className="animate-pulse">→</span>
                      </p>
-                     <div className="flex overflow-x-auto pb-4 gap-6 scrollbar-thin snap-x snap-mandatory -mx-6 px-6 md:mx-0 md:px-0 md:grid md:grid-cols-3 md:pb-0">
-                       <div className="bg-white p-6 rounded-2xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition-all min-w-[240px] w-[82vw] md:w-auto shrink-0 snap-center md:shrink">
+                    <div onScroll={handleSpecsScroll} className="flex overflow-x-auto pb-4 gap-6 scrollbar-thin snap-x snap-mandatory -mx-6 px-6 md:mx-0 md:px-0 md:grid md:grid-cols-3 md:pb-0">
+                       <div className="bg-white p-6 rounded-2xl border border-slate-205 flex flex-col justify-between hover:shadow-2xl hover:border-sky-305 transition-all duration-350 hover:-translate-y-1.5 min-w-[240px] w-[82vw] md:w-auto shrink-0 snap-center md:shrink">
                          <div className="space-y-2">
                            <span className="text-xs font-mono font-bold text-[#1960a3]">01 / SOLUTIONS CATALOG</span>
                            <h4 className="text-sm font-black text-[#002045] font-sans">Compare HVAC systems & chillers specs</h4>
@@ -232,7 +241,7 @@ Registered under Government of India GST, MSME, and ISO guidelines.
                          </button>
                        </div>
  
-                       <div className="bg-white p-6 rounded-2xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition-all min-w-[240px] w-[82vw] md:w-auto shrink-0 snap-center md:shrink">
+                       <div className="bg-white p-6 rounded-2xl border border-slate-205 flex flex-col justify-between hover:shadow-2xl hover:border-sky-305 transition-all duration-350 hover:-translate-y-1.5 min-w-[240px] w-[82vw] md:w-auto shrink-0 snap-center md:shrink">
                          <div className="space-y-2">
                            <span className="text-xs font-mono font-bold text-[#1960a3]">02 / TECHNICAL BLUEPRINTS</span>
                            <h4 className="text-sm font-black text-[#002045] font-sans">Inspect sheet metal and pipeline thicknesses</h4>
@@ -246,7 +255,7 @@ Registered under Government of India GST, MSME, and ISO guidelines.
                          </button>
                        </div>
  
-                       <div className="bg-white p-6 rounded-2xl border border-slate-200 flex flex-col justify-between hover:shadow-md transition-all min-w-[240px] w-[82vw] md:w-auto shrink-0 snap-center md:shrink">
+                       <div className="bg-white p-6 rounded-2xl border border-slate-205 flex flex-col justify-between hover:shadow-2xl hover:border-sky-305 transition-all duration-350 hover:-translate-y-1.5 min-w-[240px] w-[82vw] md:w-auto shrink-0 snap-center md:shrink">
                          <div className="space-y-2">
                            <span className="text-xs font-mono font-bold text-[#1960a3]">03 / LIVE PROJECT MAPS</span>
                            <h4 className="text-sm font-black text-[#002045] font-sans">Check live regional site coordinates and client status</h4>
@@ -261,7 +270,19 @@ Registered under Government of India GST, MSME, and ISO guidelines.
                        </div>
                      </div>
                      {/* Swipe Progress Track for Mobile */}
-                     <div className="flex md:hidden items-center justify-center gap-1.5 mt-2">
+                     <div className="flex md:hidden flex-col items-center justify-center gap-2 mt-2">
+                        <div className="flex items-center gap-1.5 select-none text-sm font-bold font-mono">
+                          {[0, 1, 2].map((idx) => (
+                            <span
+                              key={idx}
+                              className={`transition-all duration-300 ${
+                                specsScrollIdx === idx ? 'text-[#1960a3] scale-125 font-bold' : 'text-slate-350'
+                              }`}
+                            >
+                              {specsScrollIdx === idx ? '●' : '○'}
+                            </span>
+                          ))}
+                        </div>
                        <span className="text-[10px] font-mono text-slate-400">Swipe</span>
                        <div className="w-16 h-1 rounded-full bg-slate-200 overflow-hidden relative">
                          <div className="absolute top-0 left-0 bottom-0 bg-[#1960a3] w-1/2 animate-[pulse_1.5s_infinite]" />

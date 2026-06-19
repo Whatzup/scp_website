@@ -6,6 +6,14 @@ export default function CareersSection() {
   const [selectedRole, setSelectedRole] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [successApply, setSuccessApply] = useState(false);
+  const [scrollIdx, setScrollIdx] = useState(0);
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const scrollLeft = e.currentTarget.scrollLeft;
+    const clientWidth = e.currentTarget.clientWidth;
+    if (clientWidth > 0) {
+      setScrollIdx(Math.min(CAREER_OPPORTUNITIES.length - 1, Math.max(0, Math.round(scrollLeft / (clientWidth * 0.8)))));
+    }
+  };
 
   // Form Inputs
   const [name, setName] = useState('');
@@ -62,7 +70,7 @@ export default function CareersSection() {
           <span>Swipe to check open vacancies</span>
           <span className="animate-pulse">→</span>
         </p>
-        <div className="flex overflow-x-auto pb-4 gap-6 scrollbar-thin snap-x snap-mandatory -mx-6 px-6 md:mx-0 md:px-0 md:grid md:grid-cols-2 lg:grid-cols-4 md:gap-6">
+        <div onScroll={handleScroll} className="flex overflow-x-auto pb-4 gap-6 scrollbar-thin snap-x snap-mandatory -mx-6 px-6 md:mx-0 md:px-0 md:grid md:grid-cols-2 lg:grid-cols-4 md:gap-6">
           {CAREER_OPPORTUNITIES.map((job) => (
             <div 
               key={job.id} 
@@ -103,13 +111,27 @@ export default function CareersSection() {
           ))}
         </div>
 
-        {/* Swipe Progress Track for Mobile */}
-        <div className="flex md:hidden items-center justify-center gap-1.5 mt-2">
-          <span className="text-[10px] font-mono text-slate-400">Swipe</span>
-          <div className="w-16 h-1 rounded-full bg-slate-800 overflow-hidden relative">
-            <div className="absolute top-0 left-0 bottom-0 bg-emerald-400 w-1/2 animate-[pulse_1.5s_infinite]" />
+        {/* Swipe Progress Track for Mobile with Indicators */}
+        <div className="flex md:hidden flex-col items-center justify-center gap-2 mt-2">
+          <div className="flex items-center gap-1.5 select-none text-sm font-bold font-mono">
+            {CAREER_OPPORTUNITIES.map((job, idx) => (
+              <span
+                key={job.id}
+                className={`transition-all duration-300 ${
+                  scrollIdx === idx ? 'text-emerald-400 scale-125 font-bold' : 'text-slate-650'
+                }`}
+              >
+                {scrollIdx === idx ? '●' : '○'}
+              </span>
+            ))}
           </div>
-          <span className="text-[10px] font-mono text-slate-400">to browse vacancies</span>
+          <div className="flex items-center justify-center gap-1.5">
+            <span className="text-[10px] font-mono text-slate-400">Swipe</span>
+            <div className="w-16 h-1 rounded-full bg-slate-800 overflow-hidden relative">
+              <div className="absolute top-0 left-0 bottom-0 bg-emerald-400 w-1/2 animate-[pulse_1.5s_infinite]" />
+            </div>
+            <span className="text-[10px] font-mono text-slate-400">to browse vacancies</span>
+          </div>
         </div>
 
       </div>
