@@ -16,8 +16,9 @@ export default function BeforeAfterGallery() {
     { id: 'all', title: 'Show All' },
     { id: 'Corporate Offices', title: 'Office VRV' },
     { id: 'Hospitals', title: 'Hospital Cleanroom' },
-    { id: 'Hotels', title: 'Invisible Hotel VRF' },
-    { id: 'Warehouses', title: 'Large Volume Ducting' }
+    { id: 'Hotels', title: 'Hotels & Restaurants' },
+    { id: 'Warehouses', title: 'Large Volume Ducting' },
+    { id: 'Societies', title: 'Society Clubhouses' }
   ];
 
   const filteredProjects = activeCategory === 'all' 

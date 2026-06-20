@@ -141,6 +141,36 @@ export const SAVED_PROJECTS: ProjectSection[] = [
     solution: 'Designed custom high-velocity Voltas package units coupled with massive double-galvanized spiral ducts. Installed 6 destratification energy-saver roof fans to recycle ambient cooling layers efficiently.',
     beforeImg: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&q=80&w=800', // Metal frame welding
     afterImg: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=800' // Huge organized warehouse distribution center
+  },
+  {
+    id: 'proj-5',
+    clientName: 'Shreeram Dhaba',
+    location: 'CD Chowk, Opposite Omaxe Mall, Badshahpur Sohna Rd, Sector 48, Gurugram, Haryana 122018',
+    industry: 'Hotels',
+    hvacCapacity: '40 TR Ductable Air Conditioning Units',
+    brandUsed: 'Daikin',
+    areaCovered: '18,000 Sq Ft',
+    duration: '25 Days',
+    year: '2026',
+    challenges: 'High ambient heat from kitchen clay ovens/furnaces, massive kitchen exhaust turbulence, and constant high-density customer footfall. Standard pre-existing systems suffered from thermal short-circuiting.',
+    solution: 'Engineered high-static pressure Daikin Ductable AC units coupled with variable-frequency kitchen hood scrubbers. Formulated a low-velocity fresh air dilution corridor supplying filtered air smoothly under zero-noise guidelines.',
+    beforeImg: 'https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&q=80&w=800', // rustic kitchen layout / industrial space
+    afterImg: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&q=80&w=800' // premium finished dining hall
+  },
+  {
+    id: 'proj-6',
+    clientName: 'Jumpoline Tulip Violet Society',
+    location: 'Sector 69, Gurugram, Haryana 122101',
+    industry: 'Societies',
+    hvacCapacity: '75 TR VRV Systems',
+    brandUsed: 'Voltas',
+    areaCovered: '28,000 Sq Ft',
+    duration: '35 Days',
+    year: '2025',
+    challenges: 'The society clubhouse, main banquet facilities, multi-sport complex, and tech library wanted custom energy logs and billing modules. Noise limits inside the premium library area were constrained to less than 25dB.',
+    solution: 'Designed and installed high-COP Voltas VRV systems integrated with individual smart power proportional managers (PPM). Implemented noise-muffling canvas duct adapters and anti-vibration mounts to eliminate hydraulic pump murmur.',
+    beforeImg: 'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&q=80&w=800', // high building construction
+    afterImg: 'https://images.unsplash.com/photo-1545205597-3d9d02c29597?auto=format&fit=crop&q=80&w=800' // modern sports complex / premium lounge
   }
 ];
 
@@ -263,7 +293,7 @@ export const CAREER_OPPORTUNITIES: CareerOpportunity[] = [
 
 export const MAP_PINS_DATA: MapPin[] = [
   { id: 'pin-delhi', name: 'Delhi Core', coordinates: { x: 45, y: 38 }, projectsCount: 162, highlightProject: 'Parliament Library Annex / Apex Hotel' },
-  { id: 'pin-gurgaon', name: 'Gurugram HQs', coordinates: { x: 25, y: 65 }, projectsCount: 198, highlightProject: 'ABC Corporate Complex (50 TR VRV)' },
+  { id: 'pin-gurgaon', name: 'Gurugram HQs', coordinates: { x: 25, y: 65 }, projectsCount: 202, highlightProject: 'Shreeram Dhaba (Sector 48) & Tulip Violet Society (Sector 69)' },
   { id: 'pin-noida', name: 'Noida Tech Center', coordinates: { x: 70, y: 50 }, projectsCount: 114, highlightProject: 'Apex Superspeciality ICU (120 TR Chiller)' },
   { id: 'pin-faridabad', name: 'Faridabad Industrial', coordinates: { x: 60, y: 80 }, projectsCount: 84, highlightProject: 'LogiHub cold storage (250 TR Package)' },
   { id: 'pin-ghaziabad', name: 'Ghaziabad Town', coordinates: { x: 80, y: 25 }, projectsCount: 52, highlightProject: 'Grand Regency Resort (80 TR VRF)' }

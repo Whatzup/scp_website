@@ -38,43 +38,96 @@ export default function ContactPage() {
     'Er. Sandeep Mittal (Static Pressure & Ducts)'
   ];
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim() || !phone.trim() || phone.length !== 10) return;
 
     setLoading(true);
 
-    // Simulate direct secure dispatch database write
-    setTimeout(() => {
-      const generatedId = 'SCP-TKT-' + Math.floor(10000 + Math.random() * 90000);
-      const randomEngineer = engineersList[Math.floor(Math.random() * engineersList.length)];
-      
+    try {
+      const getProjectTypeName = (typeCode: string) => {
+        switch (typeCode) {
+          case 'vrv-vrf': return 'Multi-Zone VRV/VRF Systems';
+          case 'chiller': return 'High-Volume Chiller Plants';
+          case 'ducted': return 'High-Static Ducted AC';
+          case 'cassette': return 'Commercial Cassette AC';
+          case 'amc-sla': return 'Annual AMC Contracts';
+          case 'others': return 'Other Air-Conditioning';
+          default: return typeCode;
+        }
+      };
+
+      const getRegionName = (regCode: string) => {
+        switch (regCode) {
+          case 'gurugram': return 'Gurugram';
+          case 'south-delhi': return 'South Delhi';
+          case 'noida': return 'Noida Tech Zone';
+          case 'other-ncr': return 'Other Delhi NCR';
+          default: return regCode;
+        }
+      };
+
+      const mappedProjType = getProjectTypeName(projectType);
+      const mappedRegion = getRegionName(region);
+
+      const response = await fetch('/api/leads', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          fullName: name.trim(),
+          mobileNumber: phone.trim(),
+          email: email.trim() || undefined,
+          companyName: company.trim() || 'Private Individual Operations',
+          projectType: 'Commercial', // Broad categorisation for routing
+          requirementType: mappedProjType,
+          cityLocation: mappedRegion,
+          approximateArea: 'Not Specified',
+          briefRequirement: message.trim() || undefined,
+          ctaUsed: 'Get Free Consultation',
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to submit mechanical consultation query.');
+      }
+
+      const generatedId = 'SCP-TKT-' + data.lead.id;
+      const randomEngineer = engineersList[data.lead.id % engineersList.length];
+
       const newRequest = {
         id: generatedId,
-        name,
-        company: company || 'Private Individual Operations',
-        phone: `+91 ${phone}`,
-        email: email || 'Not Provided',
-        projectType,
-        region,
-        message,
+        name: data.lead.fullName,
+        company: data.lead.companyName || 'Private Individual Operations',
+        phone: `+91 ${data.lead.mobileNumber}`,
+        email: data.lead.email || 'Not Provided',
+        projectType: data.lead.requirementType,
+        region: data.lead.cityLocation,
+        message: data.lead.briefRequirement || '',
         assignedEngineer: randomEngineer,
-        status: 'Active Audit Dispatch Queue',
-        createdAt: new Date().toISOString()
+        status: data.lead.status,
+        createdAt: data.lead.createdAt
       };
 
       try {
         const existing = JSON.parse(localStorage.getItem('super_cool_callbacks') || '[]');
         localStorage.setItem('super_cool_callbacks', JSON.stringify([newRequest, ...existing]));
-      } catch (error) {
-        console.error('Local persistence save failed', error);
+      } catch (err) {
+        console.error('Local persistence save failed', err);
       }
 
       setTicketId(generatedId);
       setAssignedEngineer(randomEngineer);
-      setLoading(false);
       setSuccess(true);
-    }, 1200);
+    } catch (err: any) {
+      console.error(err);
+      alert(err.message || 'Connecting to backend database failed.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleReset = () => {
@@ -246,17 +299,17 @@ export default function ContactPage() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full bg-[#002045] text-white py-4 rounded-xl font-bold text-xs sm:text-sm hover:bg-[#1960a3] active:scale-[0.98] transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full bg-[#002045] text-white py-4 rounded-xl font-bold text-xs sm:text-sm hover:bg-[#1960a3] active:scale-[0.98] transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer font-sans"
                 >
                   {loading ? (
                     <>
                       <Loader2 className="w-4 h-4 animate-spin text-white" />
-                      <span>Verifying SLA Dispatch Status...</span>
+                      <span>Verifying Consultation Status...</span>
                     </>
                   ) : (
                     <>
                       <Send className="w-4 h-4 text-white" />
-                      <span>Authorize Rapid Callback Dispatch</span>
+                      <span>Get Free Consultation</span>
                     </>
                   )}
                 </button>

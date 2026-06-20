@@ -62,46 +62,77 @@ export default function BookingModal({ isOpen, onClose, selectedCategory }: Book
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim() || !phone.trim() || !preferredDate || !email.trim()) return;
 
     setLoading(true);
 
-    // Simulate database write
-    setTimeout(() => {
+    try {
       const selectedCatObj = SERVICE_CATEGORIES.find(cat => cat.id === serviceType);
+      const briefReq = `Survey Date: ${preferredDate} (${preferredTime}). Preferred Brand: ${preferredBrand}. Budget: ${budget}. Notes: ${notes.trim()}`;
+
+      const response = await fetch('/api/leads', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          fullName: name.trim(),
+          mobileNumber: phone.trim(),
+          email: email.trim(),
+          companyName: company.trim() || 'Individual Client',
+          projectType: buildingType,
+          requirementType: selectedCatObj ? selectedCatObj.name : 'Commercial HVAC Project',
+          cityLocation: siteAddress.trim(),
+          approximateArea: areaSqFt ? `${Number(areaSqFt).toLocaleString()} Sq Ft` : 'Not Specified',
+          briefRequirement: briefReq,
+          ctaUsed: 'Request Site Visit',
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to submit site survey request.');
+      }
+
+      // Format success booking matching local display requirements
       const newBooking = {
-        id: 'B-' + Math.floor(1000 + Math.random() * 9000),
-        name,
-        company: company.trim() || 'Individual Client',
-        email,
-        phone: phone.startsWith('+91') ? phone : `+91 ${phone}`,
-        serviceType: selectedCatObj ? selectedCatObj.name : 'Commercial HVAC Project',
+        id: 'B-' + data.lead.id,
+        name: data.lead.fullName,
+        company: data.lead.companyName || 'Individual Client',
+        email: data.lead.email || '',
+        phone: data.lead.mobileNumber.startsWith('+91') ? data.lead.mobileNumber : `+91 ${data.lead.mobileNumber}`,
+        serviceType: data.lead.requirementType,
         preferredDate,
         preferredTime,
-        siteAddress,
-        buildingType,
-        areaSqFt: areaSqFt ? `${Number(areaSqFt).toLocaleString()} Sq Ft` : 'Not Specified',
+        siteAddress: data.lead.cityLocation,
+        buildingType: data.lead.projectType,
+        areaSqFt: data.lead.approximateArea,
         preferredBrand,
         budget,
         notes,
-        status: 'Confirmed',
-        createdAt: new Date().toISOString()
+        status: data.lead.status,
+        createdAt: data.lead.createdAt
       };
 
-      // Save to localStorage
+      // Save to localStorage too for historical self-service tracking in MyBookings
       const existingBookings = JSON.parse(localStorage.getItem('super_cool_bookings') || '[]');
       localStorage.setItem('super_cool_bookings', JSON.stringify([newBooking, ...existingBookings]));
 
       // Clean up & transition
       setSuccessBooking(newBooking);
-      setLoading(false);
       setStep(2);
 
       // Trigger custom storage event to refresh listing component if any
       window.dispatchEvent(new Event('storage_updated'));
-    }, 1200);
+    } catch (error: any) {
+      console.error('Booking submission error:', error);
+      alert(error.message || 'Connecting to backend database failed.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleReset = () => {
