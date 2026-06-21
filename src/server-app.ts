@@ -1,7 +1,7 @@
 import express from 'express';
 import { db } from './db/index.ts';
 import { leads } from './db/schema.ts';
-import { desc, eq } from 'drizzle-orm';
+import { desc, eq, sql } from 'drizzle-orm';
 import { requireAuth, AuthRequest } from './middleware/auth.ts';
 import { getOrCreateUser } from './db/users.ts';
 
@@ -9,11 +9,41 @@ const app = express();
 app.use(express.json());
 
 // 1. Health check
-app.get('/api/health', (req, res) => {
+app.get('/api/health', async (req, res) => {
+  let activeConnection = false;
+  let provider = 'None/Locally Configured';
+  let errorMessage = null;
+
+  try {
+    const dbUrl = process.env.NEON_DATABASE_URL || process.env.DATABASE_URL || process.env.SUPABASE_DATABASE_URL;
+    if (dbUrl) {
+      if (dbUrl.includes('neon') || dbUrl.includes('neon.tech')) {
+        provider = 'Neon PostgreSQL';
+      } else if (dbUrl.includes('supabase.co')) {
+        provider = 'Supabase PostgreSQL';
+      } else {
+        provider = 'PostgreSQL';
+      }
+      
+      // Execute a quick, fast validation query against the active database
+      await db.execute(sql`SELECT 1`);
+      activeConnection = true;
+    } else if (process.env.SQL_HOST) {
+      provider = 'Custom SQL Host';
+      await db.execute(sql`SELECT 1`);
+      activeConnection = true;
+    }
+  } catch (error: any) {
+    console.error('API Health check database error:', error);
+    errorMessage = error.message;
+  }
+
   res.json({
     status: 'ok',
     time: new Date().toISOString(),
-    databaseConnected: !!process.env.SQL_HOST || !!process.env.DATABASE_URL || !!process.env.SUPABASE_DATABASE_URL,
+    databaseConnected: activeConnection,
+    provider,
+    error: errorMessage,
   });
 });
 

@@ -5,6 +5,26 @@ import Logo from './Logo';
 export default function Footer() {
   const currentYear = new Date().getFullYear();
 
+  const [dbState, setDbState] = React.useState<{ provider: string; status: 'loading' | 'connected' | 'disconnected' }>({
+    provider: 'Checking...',
+    status: 'loading'
+  });
+
+  React.useEffect(() => {
+    fetch('/api/health')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.databaseConnected) {
+          setDbState({ provider: data.provider, status: 'connected' });
+        } else {
+          setDbState({ provider: data.provider || 'None', status: 'disconnected' });
+        }
+      })
+      .catch(() => {
+        setDbState({ provider: 'Error', status: 'disconnected' });
+      });
+  }, []);
+
   const handleScrollToTop = (e: React.MouseEvent) => {
     e.preventDefault();
     window.scrollTo({
@@ -112,10 +132,22 @@ export default function Footer() {
           © {currentYear} KD AC | Super Cool Projects. All trademark, copyrights and design patents reserved.
         </p>
 
-        <div className="flex items-center gap-1.5 bg-white/5 px-3 py-1 rounded-full border border-white/5">
-          <span>Crafted with</span>
-          <Heart className="w-3 h-3 text-[#F6AD55] fill-[#F6AD55]" />
-          <span>for climate comfort in Gurugram</span>
+        <div className="flex flex-wrap items-center justify-center gap-2">
+          <div className="flex items-center gap-1.5 bg-white/5 px-3 py-1 rounded-full border border-white/5">
+            <span>Crafted with</span>
+            <Heart className="w-3 h-3 text-[#F6AD55] fill-[#F6AD55]" />
+            <span>for climate comfort in Gurugram</span>
+          </div>
+
+          <div className="flex items-center gap-1.5 bg-white/5 px-3 py-1 rounded-full border border-white/5" title="Live Database Source">
+            <span className="text-ice-blue/60 font-medium">DB:</span>
+            <span className={`w-2 h-2 rounded-full ${
+              dbState.status === 'connected' ? 'bg-emerald-500 animate-pulse' : dbState.status === 'loading' ? 'bg-amber-400 animate-pulse' : 'bg-red-400'
+            }`} />
+            <span className={`font-semibold tracking-wide ${dbState.status === 'connected' ? 'text-emerald-400' : dbState.status === 'loading' ? 'text-amber-300' : 'text-red-300'}`}>
+              {dbState.provider}
+            </span>
+          </div>
         </div>
 
         <button 
