@@ -10,7 +10,8 @@ import {
 } from './db/index.ts';
 import { leads } from './db/schema.ts';
 import { desc, eq, sql } from 'drizzle-orm';
-import { requireAuth, AuthRequest } from './middleware/auth.ts';
+import { requireAuth } from './middleware/auth.ts';
+import type { AuthRequest } from './middleware/auth.ts';
 import { getOrCreateUser } from './db/users.ts';
 
 const app = express();
