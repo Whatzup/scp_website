@@ -20,12 +20,10 @@ app.get('/api/health', async (req, res) => {
   try {
     await ensureTablesExist();
 
-    const dbUrl = process.env.NEON_DATABASE_URL || process.env.DATABASE_URL || process.env.SUPABASE_DATABASE_URL;
+    const dbUrl = process.env.NEON_DATABASE_URL || process.env.DATABASE_URL;
     if (dbUrl) {
       if (dbUrl.includes('neon') || dbUrl.includes('neon.tech')) {
         provider = 'Neon PostgreSQL';
-      } else if (dbUrl.includes('supabase.co')) {
-        provider = 'Supabase PostgreSQL';
       } else {
         provider = 'PostgreSQL';
       }

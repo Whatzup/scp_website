@@ -8,13 +8,13 @@ import * as schema from './schema.ts';
 const { Pool } = pkg;
 
 export const createPool = () => {
-  const dbUrl = process.env.NEON_DATABASE_URL || process.env.DATABASE_URL || process.env.SUPABASE_DATABASE_URL;
+  const dbUrl = process.env.NEON_DATABASE_URL || process.env.DATABASE_URL;
   if (dbUrl) {
-    console.log('Connecting to database using NEON_DATABASE_URL/DATABASE_URL/SUPABASE_DATABASE_URL...');
+    console.log('Connecting to database using NEON_DATABASE_URL/DATABASE_URL...');
     return new Pool({
       connectionString: dbUrl,
       connectionTimeoutMillis: 15000,
-      ssl: dbUrl.includes('supabase.co') || dbUrl.includes('neon') || dbUrl.includes('neon.tech')
+      ssl: dbUrl.includes('neon') || dbUrl.includes('neon.tech')
         ? { rejectUnauthorized: false }
         : undefined,
     });

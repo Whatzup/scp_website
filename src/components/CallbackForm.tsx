@@ -93,7 +93,7 @@ export default function CallbackForm() {
         data = JSON.parse(text);
       } catch (err) {
         throw new Error(
-          `Vercel Server Connection Notice: Received non-JSON response (HTTP ${response.status}). This usually indicates your Database credential variables (e.g. SUPABASE_DATABASE_URL / DATABASE_URL) are NOT active. Please register environment variables inside Vercel Dashboard under Settings -> Environment Variables.`
+          `Vercel Server Connection Notice: Received non-JSON response (HTTP ${response.status}). This usually indicates your Database credential variables (e.g. NEON_DATABASE_URL / DATABASE_URL) are NOT active. Please register environment variables inside Vercel Dashboard under Settings -> Environment Variables.`
         );
       }
 
