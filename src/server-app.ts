@@ -1,4 +1,7 @@
 import express from 'express';
+import dotenv from 'dotenv';
+dotenv.config();
+
 import { db } from './db/index.ts';
 import { leads } from './db/schema.ts';
 import { desc, eq, sql } from 'drizzle-orm';
