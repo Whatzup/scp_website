@@ -2,7 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 dotenv.config();
 
-import { db } from './db/index.ts';
+import { db, ensureTablesExist } from './db/index.ts';
 import { leads } from './db/schema.ts';
 import { desc, eq, sql } from 'drizzle-orm';
 import { requireAuth, AuthRequest } from './middleware/auth.ts';
@@ -18,6 +18,8 @@ app.get('/api/health', async (req, res) => {
   let errorMessage = null;
 
   try {
+    await ensureTablesExist();
+
     const dbUrl = process.env.NEON_DATABASE_URL || process.env.DATABASE_URL || process.env.SUPABASE_DATABASE_URL;
     if (dbUrl) {
       if (dbUrl.includes('neon') || dbUrl.includes('neon.tech')) {
@@ -83,6 +85,9 @@ app.post('/api/leads', async (req, res) => {
     if (!cityLocation || !cityLocation.trim()) {
       return res.status(400).json({ error: 'City / Location is required.' });
     }
+
+    // Ensure database tables exist before continuing the insert
+    await ensureTablesExist();
 
     // Safe database insert wrapping in a try-catch
     const result = await db.insert(leads)

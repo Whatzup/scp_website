@@ -73,8 +73,16 @@ export const bootstrapDb = async () => {
   }
 };
 
-// Run bootstrap asynchronously on import
-bootstrapDb().catch((err) => console.error('Database bootstrap error:', err));
+let bootstrapped = false;
+export const ensureTablesExist = async () => {
+  if (bootstrapped) return;
+  try {
+    await bootstrapDb();
+    bootstrapped = true;
+  } catch (err) {
+    console.error('Lazy bootstrap error:', err);
+  }
+};
 
 export const db = drizzle(pool, { schema });
 export { schema };
