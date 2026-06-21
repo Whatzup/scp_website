@@ -7,26 +7,101 @@ import * as schema from './schema.ts';
 
 const { Pool } = pkg;
 
-export const createPool = () => {
-  const dbUrl = process.env.NEON_DATABASE_URL || process.env.DATABASE_URL;
+const connectionStringEnvKeys = [
+  'NEON_DATABASE_URL',
+  'DATABASE_URL',
+  'POSTGRES_URL',
+  'POSTGRES_PRISMA_URL',
+  'DATABASE_URL_UNPOOLED',
+  'POSTGRES_URL_NON_POOLING',
+] as const;
+
+const getDatabaseUrl = () => {
+  for (const key of connectionStringEnvKeys) {
+    const value = process.env[key];
+    if (value?.trim()) {
+      return { key, value: value.trim() };
+    }
+  }
+  return null;
+};
+
+const getObjectConnectionConfig = () => {
+  const host = process.env.PGHOST || process.env.SQL_HOST;
+  const user = process.env.PGUSER || process.env.SQL_USER;
+  const password = process.env.PGPASSWORD || process.env.SQL_PASSWORD;
+  const database = process.env.PGDATABASE || process.env.SQL_DB_NAME;
+
+  if (!host || !user || !password || !database) {
+    return null;
+  }
+
+  return {
+    host,
+    user,
+    password,
+    database,
+    port: process.env.PGPORT ? Number(process.env.PGPORT) : undefined,
+  };
+};
+
+export const getDatabaseConfigError = () => {
+  if (getDatabaseUrl() || getObjectConnectionConfig()) {
+    return null;
+  }
+
+  return `No database connection environment variables found. Set one of ${connectionStringEnvKeys.join(', ')} in Vercel, or provide PGHOST/PGUSER/PGPASSWORD/PGDATABASE.`;
+};
+
+export const getDatabaseProviderLabel = () => {
+  const dbUrl = getDatabaseUrl();
   if (dbUrl) {
-    console.log('Connecting to database using NEON_DATABASE_URL/DATABASE_URL...');
+    return dbUrl.value.includes('neon') || dbUrl.value.includes('neon.tech')
+      ? `Neon PostgreSQL via ${dbUrl.key}`
+      : `PostgreSQL via ${dbUrl.key}`;
+  }
+
+  if (getObjectConnectionConfig()) {
+    return process.env.PGHOST ? 'PostgreSQL via PG* variables' : 'Custom SQL Host';
+  }
+
+  return 'None/Locally Configured';
+};
+
+export const createPool = () => {
+  const dbUrl = getDatabaseUrl();
+  if (dbUrl) {
+    console.log(`Connecting to database using ${dbUrl.key}...`);
     return new Pool({
-      connectionString: dbUrl,
+      connectionString: dbUrl.value,
       connectionTimeoutMillis: 15000,
-      ssl: dbUrl.includes('neon') || dbUrl.includes('neon.tech')
+      idleTimeoutMillis: 10000,
+      max: 1,
+      ssl: dbUrl.value.includes('neon') || dbUrl.value.includes('neon.tech')
         ? { rejectUnauthorized: false }
         : undefined,
     });
   }
 
-  console.log('Connecting using Object configuration variables (SQL_*)...');
+  const objectConfig = getObjectConnectionConfig();
+  if (objectConfig) {
+    console.log('Connecting using object configuration variables...');
+    return new Pool({
+      ...objectConfig,
+      connectionTimeoutMillis: 15000,
+      idleTimeoutMillis: 10000,
+      max: 1,
+      ssl: objectConfig.host.includes('neon') || objectConfig.host.includes('neon.tech')
+        ? { rejectUnauthorized: false }
+        : undefined,
+    });
+  }
+
+  console.warn(getDatabaseConfigError());
   return new Pool({
-    host: process.env.SQL_HOST,
-    user: process.env.SQL_USER,
-    password: process.env.SQL_PASSWORD,
-    database: process.env.SQL_DB_NAME,
     connectionTimeoutMillis: 15000,
+    idleTimeoutMillis: 10000,
+    max: 1,
   });
 };
 

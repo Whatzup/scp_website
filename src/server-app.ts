@@ -2,7 +2,12 @@ import express from 'express';
 import dotenv from 'dotenv';
 dotenv.config();
 
-import { db, ensureTablesExist } from './db/index.ts';
+import {
+  db,
+  ensureTablesExist,
+  getDatabaseConfigError,
+  getDatabaseProviderLabel,
+} from './db/index.ts';
 import { leads } from './db/schema.ts';
 import { desc, eq, sql } from 'drizzle-orm';
 import { requireAuth, AuthRequest } from './middleware/auth.ts';
@@ -14,25 +19,17 @@ app.use(express.json());
 // 1. Health check
 app.get('/api/health', async (req, res) => {
   let activeConnection = false;
-  let provider = 'None/Locally Configured';
+  let provider = getDatabaseProviderLabel();
   let errorMessage = null;
 
   try {
-    await ensureTablesExist();
+    const configError = getDatabaseConfigError();
+    if (configError) {
+      errorMessage = configError;
+    } else {
+      await ensureTablesExist();
 
-    const dbUrl = process.env.NEON_DATABASE_URL || process.env.DATABASE_URL;
-    if (dbUrl) {
-      if (dbUrl.includes('neon') || dbUrl.includes('neon.tech')) {
-        provider = 'Neon PostgreSQL';
-      } else {
-        provider = 'PostgreSQL';
-      }
-      
-      // Execute a quick, fast validation query against the active database
-      await db.execute(sql`SELECT 1`);
-      activeConnection = true;
-    } else if (process.env.SQL_HOST) {
-      provider = 'Custom SQL Host';
+      // Execute a quick, fast validation query against the active database.
       await db.execute(sql`SELECT 1`);
       activeConnection = true;
     }
@@ -53,6 +50,14 @@ app.get('/api/health', async (req, res) => {
 // 2. Public endpoint to submit lead
 app.post('/api/leads', async (req, res) => {
   try {
+    const configError = getDatabaseConfigError();
+    if (configError) {
+      return res.status(500).json({
+        error: 'Database is not configured on this deployment.',
+        details: configError,
+      });
+    }
+
     const {
       fullName,
       mobileNumber,
