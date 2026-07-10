@@ -1,0 +1,6 @@
+{
+  "name": "Super Cool Projects",
+  "description": "Commercial, Industrial & Residential HVAC engineering & contracting company across India. Specialized in VRV/VRF, Chillers, Ventilation, and professional AMC services.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
