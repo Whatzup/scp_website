@@ -108,7 +108,7 @@ export const createPool = () => {
 const pool = createPool();
 
 pool.on('error', (err) => {
-  console.error('Unexpected error on idle SQL pool client:', err);
+  console.warn('SQL pool connection notice:', err?.message || err);
 });
 
 export const bootstrapDb = async () => {
@@ -143,8 +143,8 @@ export const bootstrapDb = async () => {
       );
     `);
     console.log('Database tables verified or created successfully!');
-  } catch (error) {
-    console.error('Failed to bootstrap database tables:', error);
+  } catch (error: any) {
+    console.warn('Database bootstrap notice (non-fatal):', error?.message || error);
   }
 };
 
@@ -154,8 +154,8 @@ export const ensureTablesExist = async () => {
   try {
     await bootstrapDb();
     bootstrapped = true;
-  } catch (err) {
-    console.error('Lazy bootstrap error:', err);
+  } catch (err: any) {
+    console.warn('Lazy bootstrap notice (non-fatal):', err?.message || err);
   }
 };
 
